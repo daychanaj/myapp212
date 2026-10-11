@@ -1,13 +1,11 @@
+from pathlib import Path
+
 import pandas as pd
 import plotly.express as px
 import streamlit as st
 
 
-DATA_URL = (
-    "https://krabi.gdcatalog.go.th/dataset/"
-    "0a8a80f7-2337-4e11-8c61-50a5c03c4e9b/resource/"
-    "b7ac6e4d-70fe-4cb5-95f5-00b984393bcb/download/dopa_04.csv"
-)
+DATA_FILE = Path(__file__).with_name("dopa_04.csv")
 
 AGE_COLUMNS = [
     "วัยเด็ก (อายุ 0-14 ปี)",
@@ -18,7 +16,7 @@ AGE_COLUMNS = [
 
 @st.cache_data(ttl=3600)
 def load_data() -> pd.DataFrame:
-    data = pd.read_csv(DATA_URL)
+    data = pd.read_csv(DATA_FILE)
     data.columns = data.columns.str.replace("\ufeff", "", regex=False).str.strip()
 
     for column in ["ปี", *AGE_COLUMNS]:
